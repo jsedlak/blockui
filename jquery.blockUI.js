@@ -232,6 +232,12 @@
 
 			opts.overlayCSS = $.extend({}, $.blockUI.defaults.overlayCSS, opts.overlayCSS || {});
 			css = $.extend({}, $.blockUI.defaults.css, opts.css || {});
+
+            // Legacy device? We need to override a top alignment
+			if (opts.legacyDevice) {
+			    css = $.extend({}, css, { top: $(window).scrollTop() + 'px' });
+			}
+
 			if (opts.onOverlayClick)
 				opts.overlayCSS.cursor = 'pointer';
 
@@ -280,7 +286,7 @@
 				lyr2 = $('<div class="blockUI blockOverlay" style="z-index:'+ (z++) +';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>');
 
 			// Again, support for Android 2.3
-			if (opts.legacyAndroid) {
+			if (opts.legacyDevice) {
                 s = '<div class="blockUI ' + opts.blockMsgClass + ' blockElement" style="z-index:' + (z + 10) + ';display:none;position:absolute;top:' + $(window).scrollTop() + 'px;"></div>';
             }
             else if (opts.theme && full) {
@@ -322,7 +328,7 @@
 				lyr2.css(opts.overlayCSS);
 			
 			// Not android? Setup the css
-			if (!opts.legacyAndroid) {
+			if (!opts.legacyDevice) {
 				lyr2.css('position', full ? 'fixed' : 'absolute');
 			}
 
